@@ -10,6 +10,21 @@ async function getJob() {
     return getJob;  
 }
 
+async function filterJob(cat) {
+  const getJob = await prisma.job.findMany({
+    where: {
+      cat:  {
+              contains: cat,
+              mode: 'insensitive'
+            }
+    },
+    include: {
+        applyers: true
+    }
+  })
+  return getJob;  
+}
+
 async function addJob(requestBody){ 
   const newJob = await prisma.job.create({
     data: {
@@ -28,6 +43,7 @@ async function Check(jobId) {
   })
   return checkjob;
 }
+
 
 async function deleteJob(jobId){
    const job=await prisma.job.delete({ 
@@ -63,6 +79,7 @@ async function addApplyer(requestBody,jobId){
 
 module.exports = {
   getJob,
+  filterJob,
   addJob,
   Check,
   deleteJob,

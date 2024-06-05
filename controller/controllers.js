@@ -2,9 +2,20 @@ const service = require('../services/service');
 const schema=require('../validation/validationSchema')
 
 
-async function showjob(req, res) {
+async function showJob(req, res) {
   try {
     const job = await service.getJob();
+    res.json(job);
+  } catch (error) {
+    console.error('Error in controller:', error);
+    res.status(500).json({ error: 'Failed to display job.' });
+  }
+}
+
+async function filterJob(req, res) {
+  cat=req.params.cat
+  try {
+    const job = await service.filterJob(cat);
     res.json(job);
   } catch (error) {
     console.error('Error in controller:', error);
@@ -87,7 +98,8 @@ async function updateJob(req,res) {
  }
 
 module.exports = {
-  showjob,
+  showJob,
+  filterJob,
   createJob,
   deleteJob,
   updateJob,
